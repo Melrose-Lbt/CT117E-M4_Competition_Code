@@ -41,7 +41,6 @@ void LEDx_Tuggle(uint8_t num, uint16_t time){
 	Lock_on();
 	HAL_GPIO_TogglePin(LED_Port[num], LED_Pin[num]);
 	Lock_off();
-	HAL_Delay(time);
 	
 }
 

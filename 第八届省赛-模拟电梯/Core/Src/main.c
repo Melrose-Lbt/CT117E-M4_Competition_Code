@@ -99,6 +99,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		if(Key_Status[0]==Key_pressed){
+			LEDx_Tuggle(0, 200);
+			press_hold(0, 1000);
+		}
 		LCD_DisplayStringLine(Line5, " i love you  ");
 		
     /* USER CODE END WHILE */
