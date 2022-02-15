@@ -32,3 +32,4 @@ analog_alavator\main.o: ../Core/Inc/gpio.h
 analog_alavator\main.o: ../Core/Inc/led.h
 analog_alavator\main.o: ../Core/Inc/key.h
 analog_alavator\main.o: ../Core/Inc/lcd.h
+analog_alavator\main.o: ../Core/Inc/ctrl.h

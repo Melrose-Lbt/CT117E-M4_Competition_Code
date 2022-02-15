@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "key.h"
+#include "ctrl.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -185,7 +186,31 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-	Check_All();
+	static uint16_t key_cnt = 0;
+	static uint8_t stay_to_next = 0;
+	
+	if(Info.current_state == STAY){
+		Info.press_permit = 1;
+		
+	}
+	if(Info.press_permit == 1){
+		uint8_t flager = Check_All();
+		if(flager == 1){
+			Info.press_start = 1;
+			key_cnt = 0;
+			next_flag = 0;
+		}
+		else{
+			key_cnt++;
+			if(key_cnt > 2000){
+				Info.press_permit = 0;
+				key_cnt = 0;
+			}
+		}
+	}
+	
+
+	Time_Handler();
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */

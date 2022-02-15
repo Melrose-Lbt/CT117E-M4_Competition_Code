@@ -13,10 +13,10 @@ typedef enum{
 
 extern Key_status Key_Status[4];
 
-void Check(uint8_t num);
+uint8_t Check(uint8_t num);
 void press_once(uint8_t num);
 void press_hold(uint8_t num, uint16_t time);
-void Check_All(void);
+uint8_t Check_All(void);
 
 
 

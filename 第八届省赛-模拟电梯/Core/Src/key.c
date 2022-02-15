@@ -7,19 +7,21 @@ uint16_t Key_filter[4] = {0, 0, 0, 0};
 uint16_t Key_cnt[4] = {0, 0, 0, 0};
 uint16_t Key_interval[4] = {0, 0, 0, 0};
 
-void Check(uint8_t num){
+uint8_t Check(uint8_t num){
 	if(HAL_GPIO_ReadPin(Key_Port[num], Key_Pin[num])==GPIO_PIN_RESET){
 		Key_filter[num] <<= 1;
 		Key_filter[num] |= 0x0001;
 		if(Key_filter[num]>0x03FF){
 			if(Key_Status[num] == Key_released){
 				Key_Status[num] = Key_pressed;
+				return 1;
 			}
 			if(Key_Status[num] == Key_longpressed){
 				Key_cnt[num]++;
 				if(Key_cnt[num]>Key_interval[num]){
 					Key_Status[num] = Key_pressed;
 					Key_cnt[num] = 0;
+					return 1;
 				}
 			}
 		}
@@ -29,14 +31,23 @@ void Check(uint8_t num){
 		if(Key_filter[num] == 0){
 			Key_Status[num] = Key_released;
 			Key_cnt[num] = 0;
+			return 0;
 		}
 	}
 }
 
-void Check_All(void){
+uint8_t Check_All(void){
+	uint8_t sum = 0;
 	for(int i = 0;i < 4;i++){
-		Check(i);
+		sum += Check(i);
 	}
+	if(sum>0){
+		return 1; 
+	}
+	else{
+		return 0;
+	}
+	return 0;
 }
 
 void press_once(uint8_t num){

@@ -3,7 +3,7 @@
 
 /* includes */
 #include "main.h"
-
+#include "led.h"
 
 /* state define */
 typedef enum{
@@ -28,9 +28,28 @@ typedef struct{
 	uint8_t press_permit; /* 1 permit, 0 not permit */
 	uint8_t press_timeout;
 	
+	uint8_t up_or_down;
+	
 }Machine;
 
+extern Machine Info;
+extern uint8_t floor_flag[4];
+extern uint8_t next_flag;
 
+void State_Init(void);
+void Opened_to_Next();
+void Waiting_to_closing();
+void Closing_to_Closed();
+void Closed_to_next();
+void Up_to_Arrived();
+void Down_to_Arrived();
+void Arrived_to_Opening();
+void Opening_to_Opened();
+uint8_t Adder(uint8_t *num);
+
+
+void Time_Handler();
+void Key_stop_handler();
 
 
 #endif
