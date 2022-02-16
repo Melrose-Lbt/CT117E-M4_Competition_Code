@@ -85,10 +85,7 @@ void Error_Handler(void);
 #define LED_EN_Pin GPIO_PIN_2
 #define LED_EN_GPIO_Port GPIOD
 /* USER CODE BEGIN Private defines */
-extern uint8_t next_floor_buffer[4];
-void Renew_buffer(uint8_t pos);
-uint8_t Find_max();
-uint8_t Find_min();
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

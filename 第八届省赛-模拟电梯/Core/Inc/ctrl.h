@@ -4,6 +4,8 @@
 /* includes */
 #include "main.h"
 #include "led.h"
+#include "key.h"
+#include "lcd.h"
 
 /* state define */
 typedef enum{
@@ -46,8 +48,12 @@ void Down_to_Arrived();
 void Arrived_to_Opening();
 void Opening_to_Opened();
 uint8_t Adder(uint8_t *num);
+extern uint8_t next_floor_buffer[4];
+void Renew_buffer(uint8_t pos);
+uint8_t Find_max();
+uint8_t Find_min();
 
-
+void main_logic();
 void Time_Handler();
 void Key_stop_handler();
 

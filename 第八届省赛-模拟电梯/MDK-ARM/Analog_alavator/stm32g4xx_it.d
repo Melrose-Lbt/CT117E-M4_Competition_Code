@@ -32,3 +32,4 @@ analog_alavator\stm32g4xx_it.o: ../Core/Inc/stm32g4xx_it.h
 analog_alavator\stm32g4xx_it.o: ../Core/Inc/key.h
 analog_alavator\stm32g4xx_it.o: ../Core/Inc/ctrl.h
 analog_alavator\stm32g4xx_it.o: ../Core/Inc/led.h
+analog_alavator\stm32g4xx_it.o: ../Core/Inc/lcd.h

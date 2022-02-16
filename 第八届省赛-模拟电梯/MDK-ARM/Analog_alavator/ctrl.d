@@ -30,3 +30,5 @@ analog_alavator\ctrl.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_
 analog_alavator\ctrl.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h
 analog_alavator\ctrl.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 analog_alavator\ctrl.o: ../Core/Inc/led.h
+analog_alavator\ctrl.o: ../Core/Inc/key.h
+analog_alavator\ctrl.o: ../Core/Inc/lcd.h

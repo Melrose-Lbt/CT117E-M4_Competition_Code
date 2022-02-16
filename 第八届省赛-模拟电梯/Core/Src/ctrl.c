@@ -3,6 +3,8 @@
 Machine Info;
 uint8_t floor_flag[4] = {0, 0, 0, 0};
 uint8_t next_flag = 0;
+char buffer[30];
+uint8_t next_floor_buffer[4] = {0, 0, 0, 0};
 
 uint8_t Adder(uint8_t *num){
 	uint8_t sum=0;
@@ -211,5 +213,174 @@ void Time_Handler(){
 				wait_time = 0;
 			}
 		}
+}
+
+
+
+
+
+
+
+
+
+void Renew_buffer(uint8_t pos){
+	next_floor_buffer[pos] = 0;
+}
+
+uint8_t Find_min(){
+	uint8_t min = 0;
+	for(int i =0;i<4;i++){
+		if(next_floor_buffer[i]!=0){
+			min = next_floor_buffer[i];
+			break;
+		}
+	}
+	
+	
+	for(int i = 0;i<4;i++){
+		if(next_floor_buffer[i] == 0){
+			continue;
+		}
+		else{
+			if(next_floor_buffer[i]>=min){
+				continue;
+			}
+			else{
+				min = next_floor_buffer[i];
+			}
+		}
+	}
+	return min;
+}
+
+uint8_t Find_max(){
+	uint8_t max = 0;
+	for(int i =0;i<4;i++){
+		if(next_floor_buffer[i]!=0){
+			max = next_floor_buffer[i];
+			break;
+		}
+	}
+	for(int i = 0;i<4;i++){
+		if(next_floor_buffer[i] == 0){
+			continue;
+		}
+		else{
+			if(next_floor_buffer[i]<=max){
+				continue;
+			}
+			else{
+				max = next_floor_buffer[i];
+			}
+		}
+	}
+	return max;
+}
+
+
+void Init_next_floor_buffer(){
+	for(int i=0;i<4;i++){
+		if(floor_flag[i]==1){
+			next_floor_buffer[i] = i+1;
+		}
+	}
+	if(Info.up_or_down == 1){
+		Info.next_floor = Find_min();
+	}
+	else if(Info.up_or_down == 0){
+		Info.next_floor = Find_max();
+	}
+}
+
+void debug_Info(){
+	sprintf(buffer, "  last state:%d  ",Info.Last_state);
+		LCD_DisplayStringLine(Line1, (uint8_t *)buffer);
+		
+		sprintf(buffer, "  sum floor:%d  ",Adder(floor_flag));
+		LCD_DisplayStringLine(Line2, (uint8_t *)buffer);
+		
+		sprintf(buffer, "  next floor:%d  ",Info.next_floor);
+		LCD_DisplayStringLine(Line3, (uint8_t *)buffer);
+		
+		sprintf(buffer, "  floor:%d  ",Info.current_floor);
+		LCD_DisplayStringLine(Line4, (uint8_t *)buffer);
+		
+		sprintf(buffer, "  press_permit:%d  ",Info.press_permit);
+		LCD_DisplayStringLine(Line5, (uint8_t *)buffer);
+		
+		sprintf(buffer, "  state:%d  ",Info.current_state);
+		LCD_DisplayStringLine(Line6, (uint8_t *)buffer);
+	
+}
+void Show_Screen(){
+	
+	LCD_DisplayStringLine(Line2, "  Current Stage  ");
+	sprintf(buffer, "      %d      ",Info.current_floor);
+	LCD_DisplayStringLine(Line4, (uint8_t *)buffer);
+}
+
+
+void main_logic(){
+	if(Info.press_permit == 1){
+		
+			if(Key_Status[0]==Key_pressed && floor_flag[0]==0 && Info.current_floor != 1){
+				floor_flag[0] = 1;
+			}
+			if(Key_Status[1]==Key_pressed && floor_flag[1]==0 && Info.current_floor != 2){
+				floor_flag[1] = 1;
+			}
+			if(Key_Status[2]==Key_pressed && floor_flag[2]==0 && Info.current_floor != 3){
+				floor_flag[2] = 1;
+			}
+			if(Key_Status[3]==Key_pressed && floor_flag[3]==0 && Info.current_floor != 4){
+				floor_flag[3] = 1;
+			}
+			Init_next_floor_buffer();
+			
+		}
+		
+		if(Info.current_state == STAY){
+			if(Info.current_floor == 1){
+				Info.up_or_down = 1;
+			}
+			else if(Info.current_floor == 4){
+				Info.up_or_down = 0;
+			}
+			else if(Info.current_floor == 2 || Info.current_floor == 3){
+				uint8_t max = Find_max();
+				if(max > Info.current_floor){
+					Info.up_or_down = 1;
+				}
+				else if(max < Info.current_floor){
+					Info.up_or_down =0;
+				}
+			}
+		}
+		if(Info.current_state == OPENING){
+			LEDx_Off(7);
+			LEDx_Off(6);
+			LEDx_Off(5);
+			LEDx_Off(4);
+			indexes = 7;
+		}
+		
+		if(Info.current_state == UP){
+			LEDx_UPflow();
+		}
+		if(Info.current_state == DOWN){
+			LEDx_Downflow();
+		}
+		
+		for(int i = 0; i<4;i++){
+			if(floor_flag[i] == 1){
+				LEDx_On(i);
+			}
+			else if(floor_flag[i] == 0){
+				LEDx_Off(i);
+			}
+		}
+		
+		debug_Info();
+		
 }
 	
